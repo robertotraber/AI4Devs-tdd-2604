@@ -17,17 +17,16 @@ export class Resume {
         this.uploadDate = new Date();
     }
 
-    async save(): Promise<Resume> {
+    async save(tx?: any): Promise<Resume> {
         if (!this.id) {
-            return await this.create();
+            return await this.create(tx);
         }
         throw new Error('No se permite la actualización de un currículum existente.');
     }
 
-    async create(): Promise<Resume> {
-        console.log(this);
-
-        const createdResume = await prisma.resume.create({
+    async create(tx?: any): Promise<Resume> {
+        const client: any = tx ?? prisma;
+        const createdResume = await client.resume.create({
             data: {
                 candidateId: this.candidateId,
                 filePath: this.filePath,

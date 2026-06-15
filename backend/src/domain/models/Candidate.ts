@@ -28,7 +28,10 @@ export class Candidate {
         this.resumes = data.resumes || [];
     }
 
-    async save() {
+    async save(tx?: any) {
+        // Permite reutilizar un cliente de transacción (prisma.$transaction)
+        // para que el guardado del candidato y sus entidades sea atómico.
+        const client: any = tx ?? prisma;
         const candidateData: any = {};
 
         // Solo añadir al objeto candidateData los campos que no son undefined
@@ -76,7 +79,7 @@ export class Candidate {
         if (this.id) {
             // Actualizar un candidato existente
             try {
-                return await prisma.candidate.update({
+                return await client.candidate.update({
                     where: { id: this.id },
                     data: candidateData
                 });
@@ -95,7 +98,7 @@ export class Candidate {
         } else {
             // Crear un nuevo candidato
             try {
-                const result = await prisma.candidate.create({
+                const result = await client.candidate.create({
                     data: candidateData
                 });
                 return result;
