@@ -19,7 +19,8 @@ export class Education {
         this.candidateId = data.candidateId;
     }
 
-    async save() {
+    async save(tx?: any) {
+        const client: any = tx ?? prisma;
         const educationData: any = {
             institution: this.institution,
             title: this.title,
@@ -33,13 +34,13 @@ export class Education {
 
         if (this.id) {
             // Actualizar una experiencia laboral existente
-            return await prisma.education.update({
+            return await client.education.update({
                 where: { id: this.id },
                 data: educationData
             });
         } else {
             // Crear una nueva experiencia laboral
-            return await prisma.education.create({
+            return await client.education.create({
                 data: educationData
             });
         }

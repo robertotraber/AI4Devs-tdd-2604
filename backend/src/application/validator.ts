@@ -12,7 +12,7 @@ const validateName = (name: string) => {
 };
 
 const validateEmail = (email: string) => {
-    if (!email || !EMAIL_REGEX.test(email)) {
+    if (!email || !EMAIL_REGEX.test(email) || email.length > 255) {
         throw new Error('Invalid email');
     }
 };
@@ -40,7 +40,7 @@ const validateEducation = (education: any) => {
         throw new Error('Invalid institution');
     }
 
-    if (!education.title || education.title.length > 100) {
+    if (!education.title || education.title.length > 250) {
         throw new Error('Invalid title');
     }
 

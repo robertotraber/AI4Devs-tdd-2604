@@ -21,7 +21,8 @@ export class WorkExperience {
         this.candidateId = data.candidateId;
     }
 
-    async save() {
+    async save(tx?: any) {
+        const client: any = tx ?? prisma;
         const workExperienceData: any = {
             company: this.company,
             position: this.position,
@@ -36,13 +37,13 @@ export class WorkExperience {
 
         if (this.id) {
             // Actualizar una experiencia laboral existente
-            return await prisma.workExperience.update({
+            return await client.workExperience.update({
                 where: { id: this.id },
                 data: workExperienceData
             });
         } else {
             // Crear una nueva experiencia laboral
-            return await prisma.workExperience.create({
+            return await client.workExperience.create({
                 data: workExperienceData
             });
         }
